@@ -37,7 +37,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-canvas text-ink">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar onNavigate={onNavigate} lenisRef={lenisRef} />
       <main>
         <Hero onNavigate={onNavigate} />
         <Terrain />

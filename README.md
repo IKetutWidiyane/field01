@@ -46,7 +46,7 @@ src/
 ├─ animations/     section.ts (entry point), reveal.ts, parallax.ts,
 │                  scroll.ts, hero.ts, utils.ts
 ├─ data/           equipment, terrain, fieldTests, journal, system (.ts)
-├─ hooks/          useLenis, useReducedMotion, useMediaQuery
+├─ hooks/          useLenis, useReducedMotion, useMediaQuery, useScrollLock
 ├─ types.ts        shared TypeScript data models
 ├─ App.tsx · main.tsx · index.css
 ```
@@ -76,6 +76,25 @@ Data is fully typed and separated from presentation (section 26).
 - Utility set: `revealText / revealImage / fadeUp / staggerReveal / clipReveal /
   parallaxImage / scaleOnScroll / horizontalScroll`.
 - All motion respects `prefers-reduced-motion` (`hooks/useReducedMotion.ts`).
+
+## Navigation
+
+- One fixed bar: brand + `EQUIPMENT / FIELD TEST / JOURNAL / MENU` on desktop,
+  brand + hamburger on mobile (section 12 of `DESIGN.MD`).
+- The mobile trigger is drawn, not imported: three hairlines in a `22 × 12`
+  box that fold into an orange X, with a mono `MENU` / `CLOSE` micro-label in
+  a `44 × 44` touch target.
+- The overlay is a fullscreen `role="dialog"` anchored to `inset: 0` and
+  padded past the bar, so it never leaks a sliver of the page underneath.
+- **An open menu locks the page.** `useScrollLock()` runs three layers —
+  `lenis.stop()`, `overflow: hidden` on `html` + `body` (scrollbar loss
+  compensated via `--scroll-lock-gutter` so the fixed header does not shift),
+  and a coarse-pointer `position: fixed` body freeze whose offset is restored
+  on close with a Lenis re-sync. The panel carries `data-lenis-prevent` so it
+  stays scrollable.
+- Keyboard/AT: `Esc` closes, focus enters the panel and returns to the
+  trigger, `Tab` cycles inside the header, the closed panel is `inert`, and
+  the menu closes itself at the `md` breakpoint.
 
 ## Page structure
 

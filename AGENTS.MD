@@ -397,7 +397,7 @@ Both are loaded once from Google Fonts in `index.html` (with
 Only the weights the design actually uses are requested from Google Fonts:
 
 ```text
-300   font-light    micro-UI (mobile menu trigger), .type-accent accent line
+300   font-light    mobile menu trigger label, .type-accent accent line
 400   font-normal   body copy, technical metadata
 500   font-medium   labels, metadata values, active states
 600   font-semibold section headings, buttons, navigation
@@ -537,11 +537,34 @@ Avoid heavy glassmorphism.
 Display:
 
 ```text
-FIELD/01
--
+FIELD/01                    ☰  three hairlines + mono label
 ```
 
-The `-` opens a fullscreen mobile navigation.
+The trigger is a **drawn hamburger**, not a character and not an icon
+package: three 1px hairlines inside a `22 × 12` box that fold into an
+orange X when the menu opens. A mono micro-label (`MENU` / `CLOSE`) at
+weight `300` sits to its left; the whole control is a `44 × 44` touch
+target optically aligned to the column edge (`-mr-[11px]` compensates for
+the box padding around the hairlines).
+
+The overlay is a fullscreen `role="dialog"` surface — `inset: 0` padded
+past the bar — so opening it never reveals a sliver of the page below at
+any header height.
+
+**While the menu is open, the page behind it cannot scroll.** Three
+mechanisms run together (`src/hooks/useScrollLock.ts`):
+
+```text
+lenis.stop()                 the smooth-scroll engine ignores overflow:hidden
+overflow: hidden             html + body, scrollbar loss compensated by
+                             --scroll-lock-gutter (fixed header must not shift)
+body position: fixed         coarse-pointer freeze — Safari ignores
+                             overflow:hidden; offset restored on release
+```
+
+The panel keeps `data-lenis-prevent` so it stays scrollable inside the
+locked page. Rule: **any fixed overlay that claims the screen owns the
+scroll lock while it is open.**
 
 Menu:
 
@@ -556,6 +579,11 @@ The mobile menu shows the four destinations and nothing else: no index
 numbers, no `FIELD SYSTEM / 01` string, no decorative metadata rows. One
 short coordinates line at the bottom of the overlay is the only permitted
 technical detail.
+
+Keyboard contract: `Esc` closes, focus enters the panel on open and
+returns to the trigger on close, `Tab` cycles within the header (the
+closed panel is `inert`), and the menu closes itself at the `md`
+breakpoint so it can never be stranded behind the desktop layout.
 
 Use a clean fullscreen transition.
 
