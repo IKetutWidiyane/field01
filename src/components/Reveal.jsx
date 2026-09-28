@@ -3,8 +3,9 @@ import { useEffect, useRef } from 'react'
 /**
  * Reveal — adds `.is-in` when the element scrolls into view.
  * Works with the `.reveal` / `.is-in` rules in global.css.
+ * `delay` (ms) staggers the transition.
  */
-export default function Reveal({ as: Tag = 'div', className = '', children, ...rest }) {
+export default function Reveal({ as: Tag = 'div', className = '', delay = 0, children, ...rest }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -24,7 +25,12 @@ export default function Reveal({ as: Tag = 'div', className = '', children, ...r
   }, [])
 
   return (
-    <Tag ref={ref} className={`reveal ${className}`.trim()} {...rest}>
+    <Tag
+      ref={ref}
+      className={`reveal ${className}`.trim()}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      {...rest}
+    >
       {children}
     </Tag>
   )

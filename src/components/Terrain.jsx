@@ -11,7 +11,7 @@ const TERRAINS = [
     alt: '3,842 M',
     zone: 'Temperate / high',
     img: 'https://picsum.photos/id/1018/1200/900',
-    alt: 'Granite ridge above the treeline',
+    shot: 'Granite ridge above the treeline',
   },
   {
     name: 'Iceland',
@@ -21,7 +21,7 @@ const TERRAINS = [
     alt: '1,491 M',
     zone: 'Sub-arctic / maritime',
     img: 'https://picsum.photos/id/1016/1200/900',
-    alt: 'Black basalt field under low cloud',
+    shot: 'Black basalt field under low cloud',
   },
   {
     name: 'Sahara',
@@ -31,7 +31,7 @@ const TERRAINS = [
     alt: '3,415 M',
     zone: 'Arid / extreme',
     img: 'https://picsum.photos/id/1040/1200/900',
-    alt: 'Dune crest against a hot sky',
+    shot: 'Dune crest against a hot sky',
   },
   {
     name: 'Pacific NW',
@@ -41,7 +41,7 @@ const TERRAINS = [
     alt: '4,392 M',
     zone: 'Wet / temperate',
     img: 'https://picsum.photos/id/1015/1200/900',
-    alt: 'River valley under dense forest',
+    shot: 'River valley under dense forest',
   },
 ]
 
@@ -87,7 +87,7 @@ export default function Terrain() {
 
           <Reveal className="terrain__media">
             <div className="frame terrain__frame">
-              <img key={t.name} src={t.img} alt={t.alt} loading="lazy" />
+              <img key={t.name} src={t.img} alt={t.shot} loading="lazy" />
             </div>
             <div className="terrain__panel">
               <div className="kv">
