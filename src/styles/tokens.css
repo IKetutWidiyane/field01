@@ -1,0 +1,63 @@
+/* ============================================================
+   FIELD/01 — DESIGN TOKENS
+   Warm White + Near Black + Slate + Sand + Signal Orange
+   "Orange is a signal, not the foundation."
+   ============================================================ */
+
+:root {
+  /* ---- palette ---- */
+  --bg: #f7f6f2;          /* warm off-white — dominant surface   */
+  --ink: #151515;         /* near black — primary text            */
+  --muted: #777872;       /* slate grey — technical / secondary   */
+  --signal: #f15a24;      /* signal orange — CTA + markers only   */
+  --signal-strong: #e0491c; /* deeper orange for small hover marks*/
+  --sand: #d8d1c5;        /* sand — secondary editorial blocks    */
+  --line: #d9d8d3;        /* border / grid — thin, subtle         */
+  --paper: #ffffff;       /* on-signal / footer text              */
+  --muted-disabled: rgba(119, 120, 114, 0.45);
+
+  /* ---- typography ---- */
+  --font-display: 'Space Grotesk', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', 'Cascadia Code', Consolas, monospace;
+
+  /* fluid type scale (mobile → wide screens) */
+  --fs-hero: clamp(3.25rem, 8.5vw, 8.25rem);
+  --fs-display: clamp(2.4rem, 5.6vw, 5.25rem);
+  --fs-lede: clamp(1.05rem, 1.5vw, 1.35rem);
+  --fs-body: 1rem;
+  --fs-meta: 0.78rem;
+  --fs-micro: 0.68rem;
+
+  --track-wide: 0.14em;
+  --track-meta: 0.18em;
+
+  --lh-tight: 0.95;
+  --lh-condensed: 1.12;
+  --lh-body: 1.6;
+
+  /* ---- rhythm / space ---- */
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --space-s: 0.5rem;
+  --space-m: 1.5rem;
+  --space-l: 3rem;
+  --space-xl: clamp(5rem, 10vw, 8.5rem);
+  --section-gap: clamp(6rem, 12vw, 10rem);
+
+  /* ---- geometry ---- */
+  --radius: 0.25rem;
+  --hairline: 1px;
+  --header-h: 5rem;
+  --header-h-mobile: 4.25rem;
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 0.18s;
+  --dur-med: 0.35s;
+}
+
+/* ---- semantic roles (readability in markup) ---- */
+.text-bg { color: var(--bg); }
+.text-ink { color: var(--ink); }
+.text-muted { color: var(--muted); }
+.text-signal { color: var(--signal); }
