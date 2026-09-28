@@ -374,28 +374,73 @@ Do not allow orange to dominate the interface.
 
 # 07 — TYPOGRAPHY
 
-Use a modern grotesk/sans-serif.
+## Typeface (locked)
 
-Preferred:
+```text
+DISPLAY / UI / BODY   →   GEIST
+TECHNICAL / METADATA  →   GEIST MONO
+```
 
-* Inter
-* Geist
-* Space Grotesk
+Geist is the single voice of the brand: a neutral, modern grotesk with
+excellent optical sizing and a very low "designed" signature. Geist Mono
+carries every piece of field telemetry.
 
-Use monospace for technical information:
+Both are loaded once from Google Fonts in `index.html` (with
+`display=swap` and `preconnect`) and mapped to Tailwind tokens in
+`src/index.css`:
 
-* Geist Mono
-* JetBrains Mono
+```text
+--font-display: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+--font-mono:    "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+```
 
-Typography should feel:
+Only the weights the design actually uses are requested from Google Fonts:
 
-* editorial
-* technical
-* modern
-* confident
-* restrained
+```text
+300   font-light    micro-UI (mobile menu trigger), .type-accent accent line
+400   font-normal   body copy, technical metadata
+500   font-medium   labels, metadata values, active states
+600   font-semibold section headings, buttons, navigation
+700   font-bold     brand wordmark + monumental display words only
+                    (Terrain background word, Engineered For condition word)
+      —            never used: 100, 200, 800, 900
+```
 
-Large headings should be visually strong but remain readable.
+Never request a weight the design does not use.
+
+Do NOT introduce a third family. Do NOT mix in a competing display
+typeface (no additional serif, no condensed industrial face, no
+decorative face). Hierarchy is created with **scale, weight, tracking and
+whitespace** — never with more fonts.
+
+Section headings (`.display-hero`, `.display-lg`) never exceed `600`.
+`700` is reserved for the wordmark and for single monumental words, where
+"bold display type" means *large and heavy* only at extreme size.
+
+## Roles
+
+```text
+display-hero   monumental statement type, uppercase, tracking tight, w600
+display-lg     section statements, uppercase, tracking tight, w600
+type-accent    second line of a heading — same family, italic, w300
+               (defined as .type-accent in src/index.css;
+                Geist has no italic face, so this oblique is browser-synthesised)
+wordmark       FIELD/01 at w700 — the only "loud" type in the UI
+mono           all metadata: coordinates, altitude, temperature, wind,
+               durations, serials, material codes, status flags
+```
+
+## Rules
+
+* Typography should feel: editorial, technical, modern, confident, restrained.
+* Large headings should be visually strong but remain readable.
+* Headings are short. Two to four words per line maximum.
+* Sections must never open with an explanatory paragraph. A heading plus a
+  single short supporting line is the ceiling.
+* Avoid excessive paragraphs. If body copy is not readable in one glance,
+  it is too long — cut it.
+* Technical metadata stays small (`text-[0.62rem]` – `text-xs`), uppercase,
+  and letter-spaced. It supports composition; it never dominates it.
 
 Example:
 
@@ -403,10 +448,6 @@ Example:
 THE FIELD
 STARTS HERE.
 ```
-
-Avoid excessive paragraphs.
-
-Use short copy and strong typography.
 
 ---
 
@@ -424,6 +465,19 @@ Scrolling progressively reveals:
 05 — THE SYSTEM
 06 — FIELD JOURNAL
 07 — FINAL EXPEDITION
+```
+
+**These numbers are the internal narrative sequence only.**
+
+They are NOT rendered UI. Do not print `01 / THE TERRAIN`, `02 / EQUIPMENT`
+or any equivalent numbered label above a section. Do not number navigation
+items, terrain tabs, product index rows, condition tabs, field-test reports
+or journal entries either. The content names itself:
+
+```text
+THE TERRAIN          not   01 / THE TERRAIN
+EQUIPMENT            not   02 / EQUIPMENT
+FIELD TEST / 034     ok    (034 is part of the report identity)
 ```
 
 Use carefully controlled:
@@ -497,6 +551,11 @@ FIELD TEST
 JOURNAL
 ABOUT
 ```
+
+The mobile menu shows the four destinations and nothing else: no index
+numbers, no `FIELD SYSTEM / 01` string, no decorative metadata rows. One
+short coordinates line at the bottom of the overlay is the only permitted
+technical detail.
 
 Use a clean fullscreen transition.
 
@@ -2056,3 +2115,58 @@ The result should feel:
 **outdoor but contemporary**
 
 Build the complete experience with polished transitions and intentional responsive behavior.
+
+---
+
+# 41 — v0.3 CLEAN-UI CONTRACT (READ FIRST)
+
+This section overrides any older text in this document that contradicts it.
+
+## Typography
+
+```text
+ONE FAMILY: Geist (display / UI / body) + Geist Mono (technical data)
+```
+
+No Inter, no Space Grotesk, no JetBrains Mono, no serif, no display face.
+Weights `300 / 400 / 500 / 600 / 700`, each with a defined role — see the
+weight map in section 07.
+
+## Labels
+
+```text
+SECTIONS ARE NAMED, NEVER INDEXED
+```
+
+No `01 / THE TERRAIN`, no `02 / EQUIPMENT`, no `0{n}` prefixes in navigation,
+tabs, product rows, conditions, field-test reports or journal entries. The
+numbers in section 08 are the internal scroll sequence and are never rendered.
+Identifiers that are part of the content itself (`FIELD TEST / 034`) are fine.
+
+## Copy density
+
+```text
+HEADING  +  ONE SHORT SUPPORTING LINE          = maximum per section header
+```
+
+* Sections never open with an explanatory paragraph.
+* No sentence that describes what the user is about to see.
+* No decorative metadata rows that carry no information (coordinates rails,
+  `FIELD SYSTEM / 01`, `SCHEMATIC / ACTIVE`, `VALIDATION` status bars).
+* Data that is real stays: altitude, temperature, wind, duration, weight,
+  capacity, material, weather rating, coordinates attached to a place.
+
+## Clean code
+
+* One motion entry point per section: `initSectionMotion(root)` from
+  `src/animations/section.ts`, called once on mount.
+* Declarative motion via `data-reveal-heading`, `data-reveal`, `data-parallax`,
+  `data-scale`, `data-line`. Section components do not hand-roll ScrollTriggers.
+* No dead exports, no unused CSS classes, no unused components.
+
+## Verified
+
+```bash
+npm run typecheck   # clean
+npm run build       # clean
+```

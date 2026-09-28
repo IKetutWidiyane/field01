@@ -22,17 +22,29 @@ Tokens live in `src/index.css` under the Tailwind `@theme` block
 (`bg-canvas`, `text-ink`, `text-signal`, `bg-sand`, `border-line`, …).
 Orange is a **signal, not the foundation**.
 
-Typography: Space Grotesk (display/UI) + JetBrains Mono (technical metadata).
+Typography: **Geist** (display / UI / body) + **Geist Mono** (technical
+metadata) — one family, loaded from Google Fonts in `index.html` (weights
+`300/400/500/600/700` + mono `400/500`, every weight matched to real usage)
+and mapped to `--font-display` / `--font-mono` in `src/index.css`.
+
+UI rules (v0.3, see section 41 of `AGENTS.MD`):
+
+- Sections are **named, never indexed** — no `01 / THE TERRAIN` labels.
+- Sections never open with an explanatory paragraph.
+- Technical metadata must carry real information (no decorative LAT/LON rails).
+- Motion is declared with `data-*` attributes and one `initSectionMotion()` call
+  per section instead of hand-rolled ScrollTriggers.
 
 ## Architecture (section 25 of AGENTS.MD)
 
 ```
 src/
-├─ components/     Navbar, MagneticButton, SectionLabel, TechnicalLabel,
+├─ components/     Navbar, MagneticButton, TechnicalLabel,
 │                  ImageReveal, TechnicalCallout, ProductVisual
 ├─ sections/       Hero, Terrain, Equipment, EngineeredFor, FieldTest,
 │                  System, FieldJournal, FinalCTA, Footer
-├─ animations/     reveal.ts, parallax.ts, scroll.ts, hero.ts, utils.ts
+├─ animations/     section.ts (entry point), reveal.ts, parallax.ts,
+│                  scroll.ts, hero.ts, utils.ts
 ├─ data/           equipment, terrain, fieldTests, journal, system (.ts)
 ├─ hooks/          useLenis, useReducedMotion, useMediaQuery
 ├─ types.ts        shared TypeScript data models
@@ -44,12 +56,41 @@ Data is fully typed and separated from presentation (section 26).
 ## Motion
 
 - Lenis smooth scroll synced with GSAP ScrollTrigger via a single ticker loop.
-- Hero load sequence + scroll parallax (`animations/hero.ts`).
-- Pinned horizontal catalogue for Equipment / EngineeredFor / FieldTest
-  (degrades to an intentional vertical flow on mobile).
-- `revealText / revealImage / fadeUp / staggerReveal / clipReveal /
-  parallaxImage / scaleOnScroll / horizontalScroll` utilities.
+- Hero load sequence + layered scroll parallax (`animations/hero.ts`,
+  `initHeroCinematicParallax`).
+- `initSectionMotion(root)` is the single entry point every section calls once
+  on mount. It wires a declarative contract:
+
+  | Attribute | Motion |
+  |---|---|
+  | `data-reveal-heading` | word-mask reveal on the section heading |
+  | `data-reveal` | staggered fade-up reveal |
+  | `data-parallax` | vertical parallax drift |
+  | `data-scale` | `scale 1.14 → 1` on entry |
+  | `data-line` | single-line masked text reveal |
+
+- Equipment uses a pinned horizontal catalogue that degrades to an intentional
+  vertical flow on mobile (`animations/scroll.ts`).
+- Terrain / EngineeredFor / FieldTest re-arm `parallaxImage()` on every state
+  change so switching feels cinematic.
+- Utility set: `revealText / revealImage / fadeUp / staggerReveal / clipReveal /
+  parallaxImage / scaleOnScroll / horizontalScroll`.
 - All motion respects `prefers-reduced-motion` (`hooks/useReducedMotion.ts`).
+
+## Page structure
+
+```
+Navbar
+01  Hero              — The field starts here.
+02  Terrain           — Five worlds. One system.
+03  Equipment         — The equipment system
+04  Engineered For    — Condition by condition
+05  Field Test        — Expedition reports / 034 – 036
+06  System            — Engineering blueprint
+07  Field Journal     — Notes from the field
+    Final CTA         — Where will you go next?
+    Footer
+```
 
 ## Commands
 
@@ -63,9 +104,15 @@ npm run typecheck
 
 ## Photography
 
-Placeholder photography is hot-linked from **picsum.photos**. Replace with
-real expedition photography by dropping files into `public/` and updating the
-image sources in `src/data/*.ts`.
+Photography is hot-linked from **images.unsplash.com** (alpine, forest, coast,
+desert, material and equipment frames). Replace it with real expedition
+photography by dropping optimised WebP/AVIF files into `public/` and updating
+the `image` fields in `src/data/*.ts`. Keep the art direction rules in
+section 30 of `AGENTS.MD` / section 38 of `DESIGN.MD`: cinematic natural
+light, muted natural colour, real equipment, no smiling stock hikers.
+
+Hero assets use `fetchPriority="high"`; everything below the fold uses
+`loading="lazy"`.
 
 ---
 

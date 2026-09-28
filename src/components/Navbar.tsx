@@ -145,7 +145,6 @@ export default function Navbar({ onNavigate }: NavbarProps) {
                 }s`,
               }}
             >
-              <span className="font-mono text-[0.72rem] text-signal">0{i + 1}</span>
               <span className="text-[clamp(1.8rem,6vw,3.4rem)] font-semibold uppercase leading-none tracking-tight text-ink transition-colors duration-200 group-hover:text-signal">
                 {link.label}
               </span>
@@ -157,9 +156,6 @@ export default function Navbar({ onNavigate }: NavbarProps) {
         </div>
 
         <div className="container-x flex flex-wrap items-center justify-between gap-4 pb-8">
-          <span className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted">
-            FIELD SYSTEM / 01
-          </span>
           <span className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted">
             LAT 46°32'12" N · LON 7°44'20" E
           </span>

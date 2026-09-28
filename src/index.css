@@ -17,13 +17,20 @@
   --color-line: #d9d8d3;
   --color-paper: #ffffff;
 
-  /* typography */
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  /* typography: one family — Geist (display/UI) + Geist Mono (technical data) */
+  --font-display: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
 }
 
 :root {
-  --nav-h: 5rem;
+  --field-bg: #f7f6f2;
+  --field-text: #151515;
+  --field-muted: #777872;
+  --field-sand: #d8d1c5;
+  --field-border: #d9d8d3;
+  --field-signal: #f15a24;
+
+  --nav-h: 4.5rem;
   --nav-h-mobile: 3.75rem;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -61,7 +68,7 @@ html.lenis body {
   }
 
   [id] {
-    scroll-margin-top: calc(var(--nav-h) + 1rem);
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
   }
 
   :focus-visible {
@@ -70,59 +77,78 @@ html.lenis body {
   }
 }
 
-/* ---- layout helpers ---- */
+/* ---- layout helpers (Section 10 & Section 73 of DESIGN.MD) ---- */
 .container-x {
-  width: min(1280px, 100% - (2 * var(--gutter)));
+  width: min(1360px, 100% - (2 * var(--gutter)));
   margin-inline: auto;
+}
+
+.container-editorial {
+  width: min(1600px, 100%);
+  margin-inline: auto;
+  padding-inline: 4vw;
 }
 
 .section {
   position: relative;
-  padding-block: clamp(5.5rem, 12vw, 9rem);
+  padding-block: clamp(5.5rem, 11vw, 9rem);
+}
+
+/* Technical blueprint background overlay */
+.blueprint-grid {
+  background-size: 32px 32px;
+  background-image:
+    linear-gradient(to right, rgba(217, 216, 211, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 216, 211, 0.35) 1px, transparent 1px);
+}
+
+.crosshair {
+  position: relative;
+}
+.crosshair::before,
+.crosshair::after {
+  content: '';
+  position: absolute;
+  background: var(--color-muted);
+  opacity: 0.5;
+}
+.crosshair::before {
+  width: 10px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.crosshair::after {
+  width: 1px;
+  height: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .display-hero {
-  font-size: clamp(2.9rem, 9.5vw, 8.5rem);
+  font-size: clamp(3rem, 8.5vw, 8.2rem);
   font-weight: 600;
   line-height: 0.94;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
 }
 
 .display-lg {
-  font-size: clamp(2.3rem, 6vw, 5rem);
+  font-size: clamp(2.2rem, 5.2vw, 4.8rem);
   font-weight: 600;
   line-height: 0.98;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
-.serif-accent {
+.type-accent {
+  font-family: inherit;
   font-style: italic;
   font-weight: 300;
   text-transform: none;
   letter-spacing: -0.01em;
-}
-
-/* ---- editorial pre-label: monospace eyebrow ---- */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-.eyebrow__index {
-  color: var(--color-signal);
-}
-.eyebrow__rule {
-  width: 3.25rem;
-  height: 1px;
-  background: var(--color-line);
 }
 
 /* ---- image frames: natural photography, neutral canvas ---- */
