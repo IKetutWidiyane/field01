@@ -16,3 +16,8 @@ dist-ssr
 
 # logs
 *.log
+
+# scratch (temporary helper scripts)
+.git_commit_msg*.txt
+preview-start.cmd
+preview.log
