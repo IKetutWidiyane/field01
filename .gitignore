@@ -21,3 +21,7 @@ dist-ssr
 .git_commit_msg*.txt
 preview-start.cmd
 preview.log
+
+# local project documentation
+design.md
+agent.md
