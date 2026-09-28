@@ -120,7 +120,7 @@ export default function Navbar({ onNavigate }: NavbarProps) {
 
       {/* ---- fullscreen menu ---- */}
       <div
-        className={`fixed inset-0 top-[var(--nav-h)] z-[70] flex flex-col justify-between overflow-y-auto bg-canvas transition-opacity duration-400 ${
+        className={`fixed inset-0 top-[var(--nav-h)] z-[70] flex flex-col justify-between overflow-y-auto bg-canvas transition-opacity duration-500 ${
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
         aria-hidden={!open}

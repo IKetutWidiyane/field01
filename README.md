@@ -1,59 +1,72 @@
-# FIELD/01 — Expedition Equipment Laboratory
+# FIELD/01 — Equipment for the Unmapped
 
-A premium outdoor-editorial single-page experience built with **React + Vite**.
+A premium, Awwwards-style outdoor-equipment digital experience built as a
+**digital field laboratory** — editorial canvas, cinematic photography,
+engineering data and a high-visibility expedition-orange signal system.
 
-> Warm paper, clean type, signal orange where it matters.
+Stack: **React + Vite + TypeScript + Tailwind CSS v4 + GSAP (ScrollTrigger) + Lenis.**
 
 ## Design System
 
 | Role | Value |
 |---|---|
-| Background (dominant) | `#F7F6F2` |
-| Primary text | `#151515` |
-| Slate (technical / meta) | `#777872` |
+| Canvas (dominant background) | `#F7F6F2` |
+| Ink (primary text) | `#151515` |
+| Muted (technical / metadata) | `#777872` |
 | Signal orange (CTA + markers only) | `#F15A24` |
 | Sand (secondary blocks) | `#D8D1C5` |
-| Border / grid | `#D9D8D3` |
+| Line (borders / grid) | `#D9D8D3` |
 | Footer (single dark moment) | `#151515` |
 
-Tokens live in `src/styles/tokens.css`. Orange is a **signal, not the foundation** — it appears on CTAs, active states, field-test markers and technical highlights only.
+Tokens live in `src/index.css` under the Tailwind `@theme` block
+(`bg-canvas`, `text-ink`, `text-signal`, `bg-sand`, `border-line`, …).
+Orange is a **signal, not the foundation**.
 
-## Stack
+Typography: Space Grotesk (display/UI) + JetBrains Mono (technical metadata).
 
-- Node ≥ 20, npm
-- React 19
-- Vite 6
-- Plain CSS with custom properties (no UI framework)
-
-## Project Structure
+## Architecture (section 25 of AGENTS.MD)
 
 ```
 src/
-├─ main.jsx / App.jsx        # entry + section composition
-├─ styles/
-│  ├─ tokens.css             # design tokens
-│  └─ global.css             # base, buttons, meta, utilities
-└─ components/
-   ├─ Navigation / Hero
-   ├─ Equipment / Terrain / FieldTest
-   ├─ TheSystem              # interactive blueprint (01–05)
-   ├─ Journal / FinalCta / Footer
-   └─ Reveal.jsx             # scroll-reveal helper
+├─ components/     Navbar, MagneticButton, SectionLabel, TechnicalLabel,
+│                  ImageReveal, TechnicalCallout, ProductVisual
+├─ sections/       Hero, Terrain, Equipment, EngineeredFor, FieldTest,
+│                  System, FieldJournal, FinalCTA, Footer
+├─ animations/     reveal.ts, parallax.ts, scroll.ts, hero.ts, utils.ts
+├─ data/           equipment, terrain, fieldTests, journal, system (.ts)
+├─ hooks/          useLenis, useReducedMotion, useMediaQuery
+├─ types.ts        shared TypeScript data models
+├─ App.tsx · main.tsx · index.css
 ```
+
+Data is fully typed and separated from presentation (section 26).
+
+## Motion
+
+- Lenis smooth scroll synced with GSAP ScrollTrigger via a single ticker loop.
+- Hero load sequence + scroll parallax (`animations/hero.ts`).
+- Pinned horizontal catalogue for Equipment / EngineeredFor / FieldTest
+  (degrades to an intentional vertical flow on mobile).
+- `revealText / revealImage / fadeUp / staggerReveal / clipReveal /
+  parallaxImage / scaleOnScroll / horizontalScroll` utilities.
+- All motion respects `prefers-reduced-motion` (`hooks/useReducedMotion.ts`).
 
 ## Commands
 
 ```bash
 npm install     # install dependencies
-npm run dev     # start dev server (http://localhost:5173)
-npm run build   # production build → dist/
+npm run dev     # dev server at http://localhost:5173
+npm run build   # typecheck + production build → dist/
 npm run preview # preview the production build
+npm run typecheck
 ```
 
 ## Photography
 
-Placeholder photography is hot-linked from **picsum.photos** (free placeholder service). Replace with real expedition photography by dropping files into `public/` and updating the `src`/`img` references in each component.
+Placeholder photography is hot-linked from **picsum.photos**. Replace with
+real expedition photography by dropping files into `public/` and updating the
+image sources in `src/data/*.ts`.
 
 ---
 
-FIELD/01 © 2026 — Engineered for the terrain.
+FIELD/01 © 2026 — Equipment for the Unmapped.

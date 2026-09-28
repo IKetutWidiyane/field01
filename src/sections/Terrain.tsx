@@ -11,7 +11,7 @@ export default function Terrain() {
   const listRef = useRef<HTMLDivElement>(null)
   const imgWrapRef = useRef<HTMLDivElement>(null)
   const wordRef = useRef<HTMLDivElement>(null)
-  const condRef = useRef<HTMLDivElement>(null)
+  const condRef = useRef<HTMLUListElement>(null)
 
   /* GSAP transition when selection changes */
   useEffect(() => {
